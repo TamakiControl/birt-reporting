@@ -7,7 +7,7 @@
     <parent>
         <artifactId>birt-reporting</artifactId>
         <groupId>com.tamakicontrol.modules</groupId>
-        <version>1.11.0-SNAPSHOT</version>
+        <version>1.11.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>birt-reporting-common</artifactId>

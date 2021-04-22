@@ -6,7 +6,7 @@
 
     <groupId>com.tamakicontrol.modules</groupId>
     <artifactId>birt-reporting</artifactId>
-    <version>1.11.0-SNAPSHOT</version>
+    <version>1.11.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>BIRT Reporting</name>
