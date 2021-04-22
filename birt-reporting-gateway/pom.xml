@@ -59,13 +59,15 @@
             <version>1.5.3</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
-        <!-- TODO freaking microsoft breaks out their JDBC driver by java version and now there are like 100 -->
+        <!-- Ignition are using v4.2 of the JDBC driver which should work for newer java versions -->
+        <!-- There are much newer versions but freaking microsoft breaks out their -->
+        <!-- JDBC driver by java version and now there are like 100 -->
+        <!-- Requires new repository: http://nexus.onebusaway.org/nexus/content/repositories/public/ -->
+        <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/sqljdbc4 -->
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>mssql-jdbc</artifactId>
-            <version>6.4.0.jre8</version>
-            <scope>test</scope>
+            <artifactId>sqljdbc4</artifactId>
+            <version>4.2</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->

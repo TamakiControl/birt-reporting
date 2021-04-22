@@ -68,6 +68,11 @@
             <url>http://java.sun.com/products/java-media/jai</url>
         </repository>
 
+        <repository>
+            <id>onebusaway</id>
+            <url>http://nexus.onebusaway.org/nexus/content/repositories/public/</url>
+        </repository>
+
     </repositories>
 
 </project>
