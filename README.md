@@ -3,3 +3,5 @@ This module will host Eclipse BIRT reports in the Ignition gateway and allow the
 BIRT Documentation At
 http://www.eclipse.org/birt/documentation/integrating/reapi.php
 
+NOTE ABOUT BUILDING:
+use mvn clean package instead of mvn clean install in order to include all jars
