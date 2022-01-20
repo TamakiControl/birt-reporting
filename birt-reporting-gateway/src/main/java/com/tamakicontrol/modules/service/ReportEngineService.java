@@ -39,12 +39,13 @@ public class ReportEngineService {
          * Remove default BIRT file logger and redirect it to SLF4J
          * */
         SLF4JBridgeHandler.removeHandlersForRootLogger();
-        if (SLF4JBridgeHandler.isInstalled())
-            SLF4JBridgeHandler.install();
+        if (SLF4JBridgeHandler.isInstalled()) SLF4JBridgeHandler.install();
 
         try {
             Platform.startup();
-            IReportEngineFactory factory = (IReportEngineFactory) Platform.createFactoryObject(IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY);
+            IReportEngineFactory factory = (IReportEngineFactory) Platform
+                    .createFactoryObject(IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY);
+
             engineConfig.getAppContext().put(EngineConstants.APPCONTEXT_CHART_RESOLUTION, 600);
             if (factory != null) {
                 engine = factory.createReportEngine(engineConfig);
@@ -63,14 +64,10 @@ public class ReportEngineService {
 
     /**
      * Get engine instance.
-     *
-     * @param servletContext
-     * @throws BirtException
+     * @param servletContext gateway context for BIRT engine setup
      */
-    public synchronized static void initEngineInstance(
-            GatewayContext servletContext) throws BirtException {
-        if (ReportEngineService.instance != null)
-            return;
+    public synchronized static void initEngineInstance(GatewayContext servletContext) throws BirtException {
+        if (ReportEngineService.instance != null) return;
 
         ReportEngineService.instance = new ReportEngineService(servletContext);
     }
@@ -84,8 +81,7 @@ public class ReportEngineService {
         Platform.shutdown();
         RegistryProviderFactory.releaseDefault();
 
-        if (SLF4JBridgeHandler.isInstalled())
-            SLF4JBridgeHandler.uninstall();
+        if (SLF4JBridgeHandler.isInstalled()) SLF4JBridgeHandler.uninstall();
     }
 
     public IReportEngine getEngine() {
@@ -93,8 +89,7 @@ public class ReportEngineService {
     }
 
     private void destroyEngine() {
-        if (engine != null)
-            engine.destroy();
+        if (engine != null) engine.destroy();
 
     }
 

@@ -1,0 +1,51 @@
+version: '3.3'
+
+services:
+
+  ignition-dev:
+    image: kcollins/ignition:7.9.13
+    ports:
+      - "8088:8088"
+      - "8043:8043"
+      - "8060:8060"
+      - "8000:8000"
+    volumes:
+      - ./docker/ignition.conf:/var/lib/ignition/data/ignition.conf
+    environment:
+      GATEWAY_SYSTEM_NAME: birt-reporting-dev
+      GATEWAY_ADMIN_USERNAME: tamaki
+      GATEWAY_ADMIN_PASSWORD: tamaki01
+      IGNITION_EDITION: full
+      TZ: "America/Boise"
+    restart: unless-stopped
+
+  mariadb:
+    image: mariadb:10.4
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: tamaki01
+      MYSQL_DATABASE: process
+      MYSQL_USER: tamaki
+      MYSQL_PASSWORD: tamaki01
+    restart: unless-stopped
+
+#  timescaledb:
+#    image: timescale/timescaledb:1.7.5-pg12
+#    ports:
+#      - 5432:5432
+#    environment:
+#      POSTGRES_PASSWORD: tamaki01
+#    restart: unless-stopped
+#
+#
+#
+#  mssql:
+#    image: mcr.microsoft.com/mssql/server:2019-latest
+#    ports:
+#      - "1433:1433"
+#    environment:
+#      SA_PASSWORD: "tamaki01"
+#      ACCEPT_EULA: "Y"
+#      MSSQL_PID: "Developer"
+#    restart: unless-stopped
