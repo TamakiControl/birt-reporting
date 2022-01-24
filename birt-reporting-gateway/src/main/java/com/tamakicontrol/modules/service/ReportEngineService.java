@@ -31,9 +31,9 @@ public class ReportEngineService {
     public ReportEngineService(GatewayContext context) {
 
         EngineConfig engineConfig = new EngineConfig();
-        engineConfig.setPlatformContext(new PlatformServletContext(context.getWebResourceManager().getServletContext()));
-        engineConfig.setLogConfig(context.getSystemManager().getLogsDir().getAbsolutePath(), Level.INFO);
-        engineConfig.setEngineHome(context.getSystemManager().getDataDir().getAbsolutePath());
+        engineConfig.setPlatformContext(new PlatformServletContext(context.getServletContext()));
+        engineConfig.setLogConfig(context.getLogsDir().getAbsolutePath(), Level.INFO);
+        engineConfig.setEngineHome(context.getLibDir().getAbsolutePath());
 
         /*
          * Remove default BIRT file logger and redirect it to SLF4J

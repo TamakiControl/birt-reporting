@@ -30,7 +30,7 @@ public class GatewayReportUtils extends AbstractReportUtils{
 
     private static final Logger logger = LoggerFactory.getLogger("birt-reporting");
 
-    private GatewayContext gatewayContext;
+    private final GatewayContext gatewayContext;
 
     public GatewayReportUtils(GatewayContext gatewayContext){
         this.gatewayContext = gatewayContext;
@@ -530,7 +530,7 @@ public class GatewayReportUtils extends AbstractReportUtils{
             imageHandler = new HTMLServerImageHandler();
 
         htmlOptions.setImageHandler(imageHandler);
-        htmlOptions.setImageDirectory(gatewayContext.getSystemManager().getTempDir().getPath());
+        htmlOptions.setImageDirectory(gatewayContext.getTempDir().getPath());
         htmlOptions.setBaseImageURL(options.getStringArg("baseImageURL"));
 
         htmlOptions.setSupportedImageFormats("PNG;GIF;JPG;BMP;SWF;SVG");

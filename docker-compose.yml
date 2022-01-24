@@ -3,14 +3,14 @@ version: '3.3'
 services:
 
   ignition-dev:
-    image: kcollins/ignition:8.1.10
+    image: kcollins/ignition:7.9.13
     ports:
       - "8088:8088"
       - "8043:8043"
       - "8060:8060"
       - "8000:8000"
     volumes:
-      - ./docker/ignition8.conf:/var/lib/ignition/data/ignition.conf
+      - ./docker/ignition7.conf:/var/lib/ignition/data/ignition.conf
     environment:
       GATEWAY_SYSTEM_NAME: birt-reporting-dev
       GATEWAY_ADMIN_USERNAME: tamaki

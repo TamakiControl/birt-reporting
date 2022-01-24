@@ -39,12 +39,12 @@ public class ReportServlet extends BaseServlet {
     }
 
     /*
-    *
-    * redirectToIndexResource
-    *
-    * Whenever a resource isn't found, redirect the user to the web index page.
-    *
-    * */
+     *
+     * redirectToIndexResource
+     *
+     * Whenever a resource isn't found, redirect the user to the web index page.
+     *
+     * */
     private ServletResource redirectToIndexResource = new ServletResource() {
         @Override
         public void doRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, IllegalArgumentException {
@@ -53,21 +53,21 @@ public class ReportServlet extends BaseServlet {
     };
 
     /*
-        *
-        * runAndRenderResource
-        *
-        * Arguments:
-        *   reportId (int) - id of the report to render
-        *   reportName (String) - name of the report to render
-        *   parameters (Dictionary) - key value pairs of parameters for the report.  We expect these parameters to come
-        *   as a member of a "parameters" key.  For instance, parameters.RunID=8 parameters.BatchID=4 etc.
-        *   options (Dictionary) - key value pairs of options for the report.  Expects the same format as parameters.
-        *   (options.embeddible=1, options.hideGridlines=1)
-        *
-        * Returns:
-        *   Rendered report output
-        *
-        * */
+     *
+     * runAndRenderResource
+     *
+     * Arguments:
+     *   reportId (int) - id of the report to render
+     *   reportName (String) - name of the report to render
+     *   parameters (Dictionary) - key value pairs of parameters for the report.  We expect these parameters to come
+     *   as a member of a "parameters" key.  For instance, parameters.RunID=8 parameters.BatchID=4 etc.
+     *   options (Dictionary) - key value pairs of options for the report.  Expects the same format as parameters.
+     *   (options.embeddible=1, options.hideGridlines=1)
+     *
+     * Returns:
+     *   Rendered report output
+     *
+     * */
     private ServletResource getRunAndRenderResource = new ServletResource() {
 
         @Override
@@ -105,7 +105,7 @@ public class ReportServlet extends BaseServlet {
                     resp.setContentType("text/html");
                 } else if (outputFormat.equalsIgnoreCase("pdf")) {
                     resp.setContentType("application/pdf");
-                } else if(outputFormat.equalsIgnoreCase("xls")){
+                } else if (outputFormat.equalsIgnoreCase("xls")) {
                     resp.setContentType("application/vnd-msexcel");
                     resp.setHeader("Content-Disposition", "attachment; filename=Report.xls");
                 } else if (outputFormat.equalsIgnoreCase("xlsx")) {
@@ -125,17 +125,17 @@ public class ReportServlet extends BaseServlet {
     };
 
     /*
-    *
-    * getParametersResource
-    *
-    * Arguments:
-    *   reportId - (int) Id of the report to get parameters for
-    *   reportName - (String) Name of the report to get parameters for
-    *
-    * Returns:
-    *   Report parameter data encoded as JSON
-    *
-    * */
+     *
+     * getParametersResource
+     *
+     * Arguments:
+     *   reportId - (int) Id of the report to get parameters for
+     *   reportName - (String) Name of the report to get parameters for
+     *
+     * Returns:
+     *   Report parameter data encoded as JSON
+     *
+     * */
     private ServletResource getParametersResource = new ServletResource() {
 
         @Override
@@ -145,12 +145,12 @@ public class ReportServlet extends BaseServlet {
 
             ArgumentMap requestParams = getRequestParams(req.getQueryString());
 
-            try{
-                if(requestParams.getLongArg("reportId") != null)
+            try {
+                if (requestParams.getLongArg("reportId") != null)
                     resp.getWriter().print(reportUtils.getReportParametersJSON(requestParams.getLongArg("reportId")));
                 else
                     resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-            }catch (Exception e){
+            } catch (Exception e) {
                 logger.error("Exception throws while requesting report parameters", e);
                 resp.sendError(500);
             }
@@ -158,16 +158,16 @@ public class ReportServlet extends BaseServlet {
     };
 
     /*
-    *
-    * getReportsResource
-    *
-    * Arguments:
-    *   None
-    *
-    * Returns:
-    *   List of reports in internal db as JSON
-    *
-    * */
+     *
+     * getReportsResource
+     *
+     * Arguments:
+     *   None
+     *
+     * Returns:
+     *   List of reports in internal db as JSON
+     *
+     * */
     private ServletResource getReportsResource = new ServletResource() {
         @Override
         public void doRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -180,16 +180,16 @@ public class ReportServlet extends BaseServlet {
     };
 
     /*
-    *
-    * getStaticResource
-    *
-    * Arguments:
-    *   None
-    *
-    * Returns:
-    *   Text data from a static file
-    *
-    * */
+     *
+     * getStaticResource
+     *
+     * Arguments:
+     *   None
+     *
+     * Returns:
+     *   Text data from a static file
+     *
+     * */
     private ServletResource getStaticResource = new ServletResource() {
 
         @Override
@@ -198,39 +198,40 @@ public class ReportServlet extends BaseServlet {
             String filePath = getURIComponent("/(.*)", req.getRequestURI());
 
             /*
-            *
-            * TODO Reduce this to one line
-            * CW 10/27/16
-            * I need to do 3 different if statements here because if the string is null
-            * I need to make it, if it's blank I can't get a substring, and finally
-            * I can do a substring to check for a '/' on the end of the path
-            * and serve up an index.  I get the feeling that this can be reduced
-            * to one line somehow...
-            *
-            * */
-            if(filePath == null)
+             *
+             * TODO Reduce this to one line
+             * CW 10/27/16
+             * I need to do 3 different if statements here because if the string is null
+             * I need to make it, if it's blank I can't get a substring, and finally
+             * I can do a substring to check for a '/' on the end of the path
+             * and serve up an index.  I get the feeling that this can be reduced
+             * to one line somehow...
+             *
+             * */
+            if (filePath == null)
                 filePath = "index.html";
-            else if(filePath.isEmpty())
+            else if (filePath.isEmpty())
                 filePath += "index.html";
-            else if(filePath.substring(filePath.length() - 1).equals("/"))
+            else if (filePath.substring(filePath.length() - 1).equals("/"))
                 filePath += "index.html";
 
             String mime = getServletContext().getMimeType(filePath);
-            if(mime != null){
+            if (mime != null) {
                 resp.setContentType(mime);
-            }else{
+            } else {
                 resp.setContentType("text/html");
             }
 
             logger.trace(String.format("Serving static file %s", filePath));
-            try(
-                InputStream fileStream = GatewayHook.class.getResourceAsStream(filePath)
-            ){
-                if(fileStream != null)
+            try (
+                    InputStream fileStream = GatewayHook.class.getResourceAsStream(filePath)
+            ) {
+                if (fileStream != null) {
                     IOUtils.copy(fileStream, resp.getOutputStream());
-                else
+                } else {
                     redirectToIndexResource.doRequest(req, resp);
-            }catch (IOException e){
+                }
+            } catch (IOException e) {
                 logger.debug("Static resource request was redirected to index");
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
                 resp.sendRedirect(getUriBase() + "/web/");
@@ -240,17 +241,17 @@ public class ReportServlet extends BaseServlet {
     };
 
     /*
-    *
-    * getImageResource
-    *
-    * Arguments:
-    *   None
-    *
-    *
-    * @returns:
-    *   Image
-    *
-    * */
+     *
+     * getImageResource
+     *
+     * Arguments:
+     *   None
+     *
+     *
+     * @returns:
+     *   Image
+     *
+     * */
     private ServletResource getImageResource = new ServletResource() {
 
         @Override
@@ -258,23 +259,25 @@ public class ReportServlet extends BaseServlet {
 
             String filePath = getURIComponent("/api/images/(.*)", req.getRequestURI());
 
-            if(filePath == null){
+            if (filePath == null) {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
 
             String mime = getServletContext().getMimeType(filePath);
-            if(mime == null){
+            if (mime == null) {
                 resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 return;
             }
             resp.setContentType(mime);
 
-            File file = new File(getContext().getSystemManager().getTempDir().getPath() + "/" + filePath);
-            if(!file.exists()){
+            File file = new File(getContext().getTempDir().getPath() + "/" + filePath);
+
+
+            if (!file.exists()) {
                 logger.debug(String.format("Image file %s not found", filePath));
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-            }else {
+            } else {
                 logger.trace(String.format("Serving image from %s", filePath));
                 resp.setContentLength((int) file.length());
                 InputStream fileStream = new FileInputStream(file);

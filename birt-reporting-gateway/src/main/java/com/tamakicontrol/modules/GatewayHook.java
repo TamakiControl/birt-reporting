@@ -21,6 +21,7 @@ import java.sql.SQLException;
 public class GatewayHook extends AbstractGatewayModuleHook {
 
     private final Logger logger = LoggerFactory.getLogger("birt-reporting");
+    private static final String SERVLET_URL = "birt-reporting";
 
     private GatewayContext gatewayContext;
 
@@ -40,7 +41,7 @@ public class GatewayHook extends AbstractGatewayModuleHook {
             logger.error("Error while starting BIRT Platform", e);
         }
 
-        gatewayContext.getWebResourceManager().addServlet("birt-reporting", ReportServlet.class);
+        gatewayContext.addServlet(SERVLET_URL, ReportServlet.class);
     }
 
     @Override
@@ -56,7 +57,7 @@ public class GatewayHook extends AbstractGatewayModuleHook {
             logger.error("Failed to shutdown BIRT engine", e);
         }
 
-        gatewayContext.getWebResourceManager().removeServlet("birt-reporting");
+        gatewayContext.removeServlet(SERVLET_URL);
     }
 
     @Override
@@ -75,7 +76,7 @@ public class GatewayHook extends AbstractGatewayModuleHook {
     }
 
     @Override
-    public Object getRPCHandler(ClientReqSession session, String projectName) {
+    public Object getRPCHandler(ClientReqSession session, Long projectId) {
         return new GatewayReportUtils(gatewayContext);
     }
 

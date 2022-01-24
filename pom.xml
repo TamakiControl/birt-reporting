@@ -13,13 +13,13 @@
     <description>An open source reporting platform for Ignition</description>
 
     <properties>
-        <ignition-platform-version>8.1.7</ignition-platform-version>
-        <ignition-sdk-version>8.1.0</ignition-sdk-version>
+        <ignition-platform-version>7.9.4</ignition-platform-version>
+        <ignition-sdk-version>7.9.4</ignition-sdk-version>
         <junit.version>5.7.2</junit.version>
         <mockito.version>3.12.4</mockito.version>
-        <client-maven-java-target>11</client-maven-java-target>
-        <gateway-maven-java-target>11</gateway-maven-java-target>
-        <gateway-java-version>11</gateway-java-version>
+        <client-maven-java-target>1.8</client-maven-java-target>
+        <gateway-maven-java-target>1.8</gateway-maven-java-target>
+        <gateway-java-version>8</gateway-java-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

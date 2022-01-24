@@ -88,7 +88,7 @@
                     <moduleName>${project.parent.name}</moduleName>
                     <moduleDescription>${project.description}</moduleDescription>
                     <moduleVersion>1.11.2.${maven.build.timestamp}</moduleVersion>
-                    <requiredIgnitionVersion>8.0.10</requiredIgnitionVersion>
+                    <requiredIgnitionVersion>${ignition-platform-version}</requiredIgnitionVersion>
                     <requiredFrameworkVersion>7</requiredFrameworkVersion>
 
                     <hooks>
