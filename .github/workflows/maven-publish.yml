@@ -11,7 +11,7 @@ on:
 #      - master
 #      - cody-dev
   pull_request:
-    branches: [ master ]
+    branches: [ master, ignition-7, ignition-8 ]
 
 jobs:
   build:
