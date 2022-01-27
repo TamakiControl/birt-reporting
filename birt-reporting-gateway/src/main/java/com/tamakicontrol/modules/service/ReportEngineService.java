@@ -1,25 +1,23 @@
 package com.tamakicontrol.modules.service;
 
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
-import com.tamakicontrol.modules.service.api.ReportServiceException;
-import com.tamakicontrol.modules.utils.ArgumentMap;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.core.framework.Platform;
 import org.eclipse.birt.core.framework.PlatformServletContext;
-import org.eclipse.birt.report.engine.api.*;
+import org.eclipse.birt.report.engine.api.EngineConfig;
+import org.eclipse.birt.report.engine.api.EngineConstants;
+import org.eclipse.birt.report.engine.api.IReportEngine;
+import org.eclipse.birt.report.engine.api.IReportEngineFactory;
 import org.eclipse.core.internal.registry.RegistryProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
-import java.io.InputStream;
-import java.io.OutputStream;
 
+/**
+ * Main BIRT Reporting Service Implementation
+ */
 public class ReportEngineService {
 
     private static final Logger logger = LoggerFactory.getLogger("birt-reporting");
@@ -63,7 +61,7 @@ public class ReportEngineService {
     }
 
     /**
-     * Get engine instance.
+     * Initialize BIRT engine instance.
      * @param servletContext gateway context for BIRT engine setup
      */
     public synchronized static void initEngineInstance(GatewayContext servletContext) throws BirtException {

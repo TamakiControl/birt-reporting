@@ -21,8 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-
-
 //TODO ReportViewerComponent Extension functions to customize tool bar
 //TODO ReportViewerComponent Add Validation Method (there could be a BIRT call that does this)
 public class ReportViewerComponent extends PDFViewerComponent {
@@ -71,9 +69,6 @@ public class ReportViewerComponent extends PDFViewerComponent {
         return builder.build();
     }
 
-    /*
-     *
-     * */
     private Long reportId = null;
 
     public Long getReportId() {

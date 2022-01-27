@@ -28,6 +28,7 @@ services:
       MYSQL_DATABASE: process
       MYSQL_USER: tamaki
       MYSQL_PASSWORD: tamaki01
+      TZ: "America/Boise"
     restart: unless-stopped
 
 #  timescaledb:
