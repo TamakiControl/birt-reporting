@@ -36,8 +36,12 @@ public class ReportEngineService {
         /*
          * Remove default BIRT file logger and redirect it to SLF4J
          * */
+        SLF4JBridgeHandler bridgeHandler = new SLF4JBridgeHandler();
         SLF4JBridgeHandler.removeHandlersForRootLogger();
-        if (SLF4JBridgeHandler.isInstalled()) SLF4JBridgeHandler.install();
+        if (!SLF4JBridgeHandler.isInstalled()) SLF4JBridgeHandler.install();
+
+        java.util.logging.Logger log = java.util.logging.Logger.getLogger("birt-reporting");
+        log.addHandler(bridgeHandler);
 
         try {
             Platform.startup();
@@ -47,6 +51,7 @@ public class ReportEngineService {
             engineConfig.getAppContext().put(EngineConstants.APPCONTEXT_CHART_RESOLUTION, 600);
             if (factory != null) {
                 engine = factory.createReportEngine(engineConfig);
+                engine.setLogger(log);
             } else {
                 logger.error("Cannot Create BIRT Engine - Engine Factory Object is Null");
             }
@@ -62,6 +67,7 @@ public class ReportEngineService {
 
     /**
      * Initialize BIRT engine instance.
+     *
      * @param servletContext gateway context for BIRT engine setup
      */
     public synchronized static void initEngineInstance(GatewayContext servletContext) throws BirtException {
