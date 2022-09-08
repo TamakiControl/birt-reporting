@@ -38,6 +38,8 @@ public class ReportServlet extends BaseServlet {
         addResource("/api/images/([^\\s]+(\\.(?i)(jpg|png|bmp|svg))$)", METHOD_GET, getImageResource);
     }
 
+    // /api/run-and-render?report=<report name>&parameters=<parameters>
+
     /*
     *
     * redirectToIndexResource

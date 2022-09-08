@@ -12,9 +12,10 @@
     <name>BIRT Reporting</name>
     <description>An open source reporting platform for Ignition</description>
 
+
     <properties>
-        <ignition-platform-version>8.1.7</ignition-platform-version>
-        <ignition-sdk-version>8.1.0</ignition-sdk-version>
+        <ignition-platform-version>8.1.16</ignition-platform-version>
+        <ignition-sdk-version>8.1.16</ignition-sdk-version>
         <junit.version>5.7.2</junit.version>
         <mockito.version>3.12.4</mockito.version>
         <client-maven-java-target>11</client-maven-java-target>
