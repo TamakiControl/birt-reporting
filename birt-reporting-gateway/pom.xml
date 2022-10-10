@@ -7,7 +7,7 @@
     <parent>
         <artifactId>birt-reporting</artifactId>
         <groupId>com.tamakicontrol.modules</groupId>
-        <version>1.11.2-SNAPSHOT</version>
+        <version>1.11.4</version>
     </parent>
 
     <artifactId>birt-reporting-gateway</artifactId>
@@ -17,7 +17,7 @@
         <dependency>
             <groupId>com.tamakicontrol.modules</groupId>
             <artifactId>birt-reporting-common</artifactId>
-            <version>1.11.2-SNAPSHOT</version>
+            <version>${project-version}</version>
         </dependency>
 
         <dependency>

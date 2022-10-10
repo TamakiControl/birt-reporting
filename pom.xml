@@ -6,7 +6,7 @@
 
     <groupId>com.tamakicontrol.modules</groupId>
     <artifactId>birt-reporting</artifactId>
-    <version>1.11.2-SNAPSHOT</version>
+    <version>1.11.4</version>
     <packaging>pom</packaging>
 
     <name>BIRT Reporting</name>
@@ -14,6 +14,7 @@
 
 
     <properties>
+        <project-version>1.11.4</project-version>
         <ignition-platform-version>8.1.16</ignition-platform-version>
         <ignition-sdk-version>8.1.16</ignition-sdk-version>
         <junit.version>5.7.2</junit.version>
