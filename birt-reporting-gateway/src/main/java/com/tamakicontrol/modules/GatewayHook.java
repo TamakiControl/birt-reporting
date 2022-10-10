@@ -34,6 +34,11 @@ public class GatewayHook extends AbstractGatewayModuleHook {
         this.gatewayContext = gatewayContext;
         BundleUtil.get().addBundle("BIRTReporting", getClass(), "BIRTReporting");
         verifySchemas(gatewayContext);
+
+        // force jpa to use the current classes classLoader to load hibernate dependencies
+        var threadClassLoader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
+
         try {
             ReportEngineService.initEngineInstance(gatewayContext);
         } catch (BirtException e) {
@@ -41,6 +46,8 @@ public class GatewayHook extends AbstractGatewayModuleHook {
         }
 
         gatewayContext.getWebResourceManager().addServlet("birt-reporting", ReportServlet.class);
+
+        Thread.currentThread().setContextClassLoader(threadClassLoader); // reset the class loader to prevent any unintended side effects
     }
 
     @Override

@@ -1,24 +1,18 @@
 package com.tamakicontrol.modules.service;
 
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
-import com.tamakicontrol.modules.service.api.ReportServiceException;
-import com.tamakicontrol.modules.utils.ArgumentMap;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.core.framework.Platform;
 import org.eclipse.birt.core.framework.PlatformServletContext;
-import org.eclipse.birt.report.engine.api.*;
-import org.eclipse.core.internal.registry.RegistryProviderFactory;
+import org.eclipse.birt.report.engine.api.EngineConfig;
+import org.eclipse.birt.report.engine.api.EngineConstants;
+import org.eclipse.birt.report.engine.api.IReportEngine;
+import org.eclipse.birt.report.engine.api.IReportEngineFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class ReportEngineService {
 
@@ -79,7 +73,7 @@ public class ReportEngineService {
         ReportEngineService.getInstance().destroyEngine();
 
         Platform.shutdown();
-        RegistryProviderFactory.releaseDefault();
+        //RegistryProviderFactory.releaseDefault(); TODO what did this do?
 
         if (SLF4JBridgeHandler.isInstalled()) SLF4JBridgeHandler.uninstall();
     }

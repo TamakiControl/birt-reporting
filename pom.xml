@@ -67,8 +67,18 @@
         </repository>
 
         <repository>
+            <id>eclipse</id>
+            <url>https://download.eclipse.org/eclipse/updates/latest/</url>
+        </repository>
+
+        <repository>
+            <id>maven-central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+
+        <repository>
             <id>icesoft</id>
-            <url>http://anonsvn.icesoft.org/repo/maven2/releases/</url>
+            <url>https://anonsvn.icesoft.org/repo/maven2/releases/</url>
         </repository>
 
         <repository>
@@ -78,7 +88,7 @@
 
         <repository>
             <id>onebusaway</id>
-            <url>http://nexus.onebusaway.org/nexus/content/repositories/public/</url>
+            <url>https://nexus.onebusaway.org/nexus/content/repositories/public/</url>
         </repository>
 
     </repositories>
