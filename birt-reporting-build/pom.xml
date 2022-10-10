@@ -31,6 +31,7 @@
             <groupId>com.tamakicontrol.modules</groupId>
             <artifactId>birt-reporting-common</artifactId>
             <version>1.11.2-SNAPSHOT</version>
+
         </dependency>
         <dependency>
             <groupId>com.tamakicontrol.modules</groupId>

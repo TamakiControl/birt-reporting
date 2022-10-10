@@ -27,6 +27,12 @@ This module is setup with docker and maven so that it's very easy to transport b
     docker-compose up -d
     mvn clean install
 
+
+## BIRT Dependencies
+    
+    mvn install:install-file -Dfile="/home/cwarren/IdeaProjects/birt-reporting/birt-reporting-gateway/src/main/resources/org.eclipse.birt.runtime_4.10.0-20221001.jar" -DgroupId=org.eclipse.birt.runtime -Dorg.eclipse.birt.runtime -Dversion=4.10.0 -Dpackaging=jar
+
+
 ###Docker Debugging
 If the docker container does not work right away, make sure you have done these steps:
 - Make sure you are not running a localhost Ignition server
