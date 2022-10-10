@@ -17,8 +17,7 @@
         <project-version>1.11.4</project-version>
         <ignition-platform-version>8.1.16</ignition-platform-version>
         <ignition-sdk-version>8.1.16</ignition-sdk-version>
-        <junit.version>5.7.2</junit.version>
-        <mockito.version>3.12.4</mockito.version>
+        <junit.version>5.9.0</junit.version>
         <client-maven-java-target>11</client-maven-java-target>
         <gateway-maven-java-target>11</gateway-maven-java-target>
         <gateway-java-version>11</gateway-java-version>

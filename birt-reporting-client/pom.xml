@@ -59,7 +59,15 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.icepdf.os/icepdf-core -->
+        <dependency>
+            <groupId>com.inductiveautomation.vision</groupId>
+            <artifactId>vision-client</artifactId>
+            <version>10.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- <editor-fold name="Dependencies"> -->
+
         <dependency>
             <groupId>org.icepdf.os</groupId>
             <artifactId>icepdf-core</artifactId>
@@ -67,19 +75,32 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.icepdf.os/icepdf-viewer -->
         <dependency>
             <groupId>org.icepdf.os</groupId>
             <artifactId>icepdf-viewer</artifactId>
             <version>6.2.2</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- </editor-fold> -->
+
+        <!-- <editor-fold name="Test Dependencies"> -->
+
         <dependency>
-            <groupId>com.inductiveautomation.vision</groupId>
-            <artifactId>vision-client</artifactId>
-            <version>10.0.1</version>
-            <scope>provided</scope>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- </editor-fold> -->
 
     </dependencies>
 

@@ -563,7 +563,7 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- JDBC Drivers -->
+        <!-- <editor-fold name="JDBC Drivers"> -->
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
@@ -595,6 +595,26 @@
             <artifactId>postgresql</artifactId>
             <version>42.3.7</version>
         </dependency>
+
+        <!-- </editor-fold> -->
+
+        <!-- <editor-fold name="Test Dependencies"> -->
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- </editor-fold> -->
 
     </dependencies>
 
