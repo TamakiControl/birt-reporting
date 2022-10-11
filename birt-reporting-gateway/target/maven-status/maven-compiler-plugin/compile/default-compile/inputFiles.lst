@@ -1,9 +1,0 @@
-/home/cwarren/IdeaProjects/birt-reporting/birt-reporting-gateway/src/main/java/com/tamakicontrol/modules/service/ReportEngineService.java
-/home/cwarren/IdeaProjects/birt-reporting/birt-reporting-gateway/src/main/java/com/tamakicontrol/modules/service/api/ReportServiceException.java
-/home/cwarren/IdeaProjects/birt-reporting/birt-reporting-gateway/src/main/java/com/tamakicontrol/modules/servlets/ReportServlet.java
-/home/cwarren/IdeaProjects/birt-reporting/birt-reporting-gateway/src/main/java/com/tamakicontrol/modules/servlets/BaseServlet.java
-/home/cwarren/IdeaProjects/birt-reporting/birt-reporting-gateway/src/main/java/com/tamakicontrol/modules/models/ReportModel.java
-/home/cwarren/IdeaProjects/birt-reporting/birt-reporting-gateway/src/main/java/com/tamakicontrol/modules/GatewayHook.java
-/home/cwarren/IdeaProjects/birt-reporting/birt-reporting-gateway/src/main/java/com/tamakicontrol/modules/scripting/GatewayReportUtils.java
-/home/cwarren/IdeaProjects/birt-reporting/birt-reporting-gateway/src/main/java/com/tamakicontrol/modules/records/ReportRecord.java
-/home/cwarren/IdeaProjects/birt-reporting/birt-reporting-gateway/src/main/java/com/tamakicontrol/modules/servlets/ServletResource.java
