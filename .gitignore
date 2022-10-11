@@ -1,7 +1,6 @@
 .idea/*
-birt-reporting-webviewer/node_modules/*
-birt-reporting-build/target/*
-birt-reporting-client/target/*
-birt-reporting-common/target/*
-birt-reporting-designer/target/*
-birt-reporting-gateway/target/*
+birt-reporting-build/target/
+birt-reporting-client/target/
+birt-reporting-common/target/
+birt-reporting-designer/target/
+birt-reporting-gateway/target/
