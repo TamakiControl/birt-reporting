@@ -564,37 +564,37 @@
         </dependency>
 
         <!-- <editor-fold name="JDBC Drivers"> -->
-        <dependency>
-            <groupId>org.mariadb.jdbc</groupId>
-            <artifactId>mariadb-java-client</artifactId>
-            <version>3.0.6</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.mariadb.jdbc</groupId>-->
+<!--            <artifactId>mariadb-java-client</artifactId>-->
+<!--            <version>3.0.6</version>-->
+<!--        </dependency>-->
 
-        <!-- Ignition are using v4.2 of the JDBC driver which should work for newer java versions -->
-        <!-- There are much newer versions but freaking microsoft breaks out their -->
-        <!-- JDBC driver by java version and now there are like 100 -->
-        <!-- Requires new repository: http://nexus.onebusaway.org/nexus/content/repositories/public/ -->
-        <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/sqljdbc4 -->
-        <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>mssql-jdbc</artifactId>
-            <version>11.2.1.jre11</version>
-        </dependency>
+<!--        &lt;!&ndash; Ignition are using v4.2 of the JDBC driver which should work for newer java versions &ndash;&gt;-->
+<!--        &lt;!&ndash; There are much newer versions but freaking microsoft breaks out their &ndash;&gt;-->
+<!--        &lt;!&ndash; JDBC driver by java version and now there are like 100 &ndash;&gt;-->
+<!--        &lt;!&ndash; Requires new repository: http://nexus.onebusaway.org/nexus/content/repositories/public/ &ndash;&gt;-->
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.microsoft.sqlserver/sqljdbc4 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.microsoft.sqlserver</groupId>-->
+<!--            <artifactId>mssql-jdbc</artifactId>-->
+<!--            <version>11.2.1.jre11</version>-->
+<!--        </dependency>-->
 
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.28</version>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/mysql/mysql-connector-java &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>mysql</groupId>-->
+<!--            <artifactId>mysql-connector-java</artifactId>-->
+<!--            <version>8.0.28</version>-->
+<!--        </dependency>-->
 
-        <!-- postgres -->
-        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.3.7</version>
-        </dependency>
+<!--        &lt;!&ndash; postgres &ndash;&gt;-->
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.postgresql/postgresql &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.postgresql</groupId>-->
+<!--            <artifactId>postgresql</artifactId>-->
+<!--            <version>42.3.7</version>-->
+<!--        </dependency>-->
 
         <!-- </editor-fold> -->
 

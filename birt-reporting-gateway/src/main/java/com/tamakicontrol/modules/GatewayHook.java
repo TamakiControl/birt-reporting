@@ -4,6 +4,7 @@ import com.inductiveautomation.ignition.common.BundleUtil;
 import com.inductiveautomation.ignition.common.licensing.LicenseState;
 import com.inductiveautomation.ignition.common.script.ScriptManager;
 import com.inductiveautomation.ignition.common.script.hints.PropertiesFileDocProvider;
+import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.clientcomm.ClientReqSession;
 import com.inductiveautomation.ignition.gateway.model.AbstractGatewayModuleHook;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
@@ -11,16 +12,12 @@ import com.tamakicontrol.modules.records.ReportRecord;
 import com.tamakicontrol.modules.scripting.GatewayReportUtils;
 import com.tamakicontrol.modules.service.ReportEngineService;
 import com.tamakicontrol.modules.servlets.ReportServlet;
-import org.eclipse.birt.core.exception.BirtException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 
 public class GatewayHook extends AbstractGatewayModuleHook {
 
-    private final Logger logger = LoggerFactory.getLogger("birt-reporting");
+    private final LoggerEx logger = LoggerEx.newBuilder().build(GatewayHook.class);
 
     private GatewayContext gatewayContext;
 
@@ -32,22 +29,18 @@ public class GatewayHook extends AbstractGatewayModuleHook {
     @Override
     public void setup(GatewayContext gatewayContext) {
         this.gatewayContext = gatewayContext;
+
         BundleUtil.get().addBundle("BIRTReporting", getClass(), "BIRTReporting");
         verifySchemas(gatewayContext);
 
-        // force jpa to use the current classes classLoader to load hibernate dependencies
-        var threadClassLoader = Thread.currentThread().getContextClassLoader();
-        Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
-
         try {
             ReportEngineService.initEngineInstance(gatewayContext);
-        } catch (BirtException e) {
+        } catch (Exception e) {
             logger.error("Error while starting BIRT Platform", e);
         }
 
         gatewayContext.getWebResourceManager().addServlet("birt-reporting", ReportServlet.class);
 
-        Thread.currentThread().setContextClassLoader(threadClassLoader); // reset the class loader to prevent any unintended side effects
     }
 
     @Override
