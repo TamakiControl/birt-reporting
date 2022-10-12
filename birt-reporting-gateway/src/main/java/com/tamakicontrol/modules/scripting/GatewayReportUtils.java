@@ -26,26 +26,26 @@ import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.util.*;
 
-public class GatewayReportUtils extends AbstractReportUtils{
+public class GatewayReportUtils extends AbstractReportUtils {
 
     private static final Logger logger = LoggerFactory.getLogger("birt-reporting");
 
     private GatewayContext gatewayContext;
 
-    public GatewayReportUtils(GatewayContext gatewayContext){
+    public GatewayReportUtils(GatewayContext gatewayContext) {
         this.gatewayContext = gatewayContext;
     }
 
     //<editor-fold desc="CRUD">
     @Override
     protected long saveReportImpl(long id, String name, String description, byte[] reportData) {
-        if(reportExists(id) || reportExists(name) && id > 0)
+        if (reportExists(id) || reportExists(name) && id > 0)
             return updateReport(id, name, description, reportData);
         else
             return addReport(name, description, reportData);
     }
 
-    private long addReport(String name, String description, byte[] reportData){
+    private long addReport(String name, String description, byte[] reportData) {
 
         ReportRecord reportRecord = gatewayContext.getPersistenceInterface().createNew(ReportRecord.META);
         reportRecord.setName(name);
@@ -56,7 +56,7 @@ public class GatewayReportUtils extends AbstractReportUtils{
         return reportRecord.getId();
     }
 
-    private long updateReport(long id, String name, String description, byte[] reportData){
+    private long updateReport(long id, String name, String description, byte[] reportData) {
         ReportRecord reportRecord = gatewayContext.getPersistenceInterface().find(ReportRecord.META, id);
 
         reportRecord.setId(id);
@@ -72,12 +72,12 @@ public class GatewayReportUtils extends AbstractReportUtils{
     protected byte[] getReportImpl(long id) {
         try {
             ReportRecord reportRecord = gatewayContext.getPersistenceInterface().find(ReportRecord.META, id);
-            if(reportRecord != null)
+            if (reportRecord != null)
                 return reportRecord.getReportData();
             else
                 return null;
 
-        }catch(NullPointerException e1){
+        } catch (NullPointerException e1) {
             logger.debug(String.format("Report id '%d' not found", id), e1);
         }
 
@@ -91,12 +91,12 @@ public class GatewayReportUtils extends AbstractReportUtils{
 
         try {
             ReportRecord reportRecord = gatewayContext.getPersistenceInterface().queryOne(query);
-            if(reportRecord != null)
+            if (reportRecord != null)
                 return reportRecord.getReportData();
             else
                 return null;
 
-        }catch(NullPointerException e1){
+        } catch (NullPointerException e1) {
             logger.debug(String.format("Report '%s' not found", name), e1);
         }
 
@@ -105,7 +105,7 @@ public class GatewayReportUtils extends AbstractReportUtils{
 
     @Override
     protected boolean reportExistsImpl(long id) {
-        return getReport(id) !=  null;
+        return getReport(id) != null;
     }
 
     @Override
@@ -119,14 +119,14 @@ public class GatewayReportUtils extends AbstractReportUtils{
         PersistenceSession session = gatewayContext.getPersistenceInterface().getSession();
         ReportRecord reportRecord = session.find(ReportRecord.META, id);
 
-        if(reportRecord != null) {
+        if (reportRecord != null) {
             reportRecord.deleteRecord();
             session.commit();
             session.close();
             return true;
-        }else
+        } else
             session.close();
-            return false;
+        return false;
     }
 
     @Override
@@ -154,7 +154,7 @@ public class GatewayReportUtils extends AbstractReportUtils{
         Object[][] data = new Object[3][reports.size()];
         ReportRecord record;
 
-        for(int i=0; i < reports.size(); i++) {
+        for (int i = 0; i < reports.size(); i++) {
             record = reports.get(i);
             data[0][i] = record.getId();
             data[1][i] = record.getName();
@@ -168,7 +168,7 @@ public class GatewayReportUtils extends AbstractReportUtils{
         return DatasetUtilities.toJSONObject(getReports()).toString();
     }
 
-    public List<ReportRecord> getReportRecords(){
+    public List<ReportRecord> getReportRecords() {
         SQuery<ReportRecord> query = new SQuery<>(ReportRecord.META);
         return gatewayContext.getPersistenceInterface().query(query);
     }
@@ -182,17 +182,17 @@ public class GatewayReportUtils extends AbstractReportUtils{
         return reportParametersToDataset(id);
     }
 
-    public String getReportParametersJSON(long id){
+    public String getReportParametersJSON(long id) {
         return serializeReportParameters(id);
     }
 
-    private ArrayList<IParameterDefnBase> getBIRTParameters(long id){
+    private ArrayList<IParameterDefnBase> getBIRTParameters(long id) {
         byte[] reportData = getReport(id);
         ArrayList<IParameterDefnBase> params = new ArrayList<>();
 
         // if null, return an empty set of parameters
-        if(reportData == null)
-                return params;
+        if (reportData == null)
+            return params;
 
         IGetParameterDefinitionTask task = null;
         try {
@@ -200,16 +200,16 @@ public class GatewayReportUtils extends AbstractReportUtils{
                     .openReportDesign(new ByteArrayInputStream(reportData));
 
             task = ReportEngineService.getInstance().getEngine().createGetParameterDefinitionTask(report);
-            params = (ArrayList)task.getParameterDefns(true);
+            params = (ArrayList) task.getParameterDefns(true);
 
-        }catch(EngineException e){
+        } catch (EngineException e) {
             logger.error("Engine exception while opening report", e);
         }
 
         return params;
     }
 
-    private Dataset reportParametersToDataset(long id){
+    private Dataset reportParametersToDataset(long id) {
 
         DatasetBuilder builder = DatasetBuilder.newBuilder();
 
@@ -221,7 +221,7 @@ public class GatewayReportUtils extends AbstractReportUtils{
 
 
         ArrayList<IParameterDefnBase> birtParams = getBIRTParameters(id);
-        for(IParameterDefnBase param: birtParams) {
+        for (IParameterDefnBase param : birtParams) {
             IScalarParameterDefn scalar = (IScalarParameterDefn) param;
             builder.addRow(scalar.getName(), scalar.getDisplayName(), scalar.getDefaultValue(), scalar.isRequired(),
                     scalar.isHidden(), scalar.getDataType(), scalar.getPromptText(), scalar.getHelpText(), scalar.getParameterType(),
@@ -241,13 +241,13 @@ public class GatewayReportUtils extends AbstractReportUtils{
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject;
 
-        try{
-            for(IParameterDefnBase param : params){
+        try {
+            for (IParameterDefnBase param : params) {
                 jsonObject = new JSONObject();
 
                 //TODO add support for parameter groups
-                if(param instanceof IParameterGroupDefn){
-                    IParameterGroupDefn group = (IParameterGroupDefn)param;
+                if (param instanceof IParameterGroupDefn) {
+                    IParameterGroupDefn group = (IParameterGroupDefn) param;
                     ArrayList<IParameterDefnBase> groupParams = group.getContents();
 
                     groupParams.forEach(groupParam -> {
@@ -255,9 +255,8 @@ public class GatewayReportUtils extends AbstractReportUtils{
                         groupParam.getDisplayName();
                     });
 
-                }
-                else{
-                    IScalarParameterDefn scalar = (IScalarParameterDefn)param;
+                } else {
+                    IScalarParameterDefn scalar = (IScalarParameterDefn) param;
 
                     jsonObject.put("name", scalar.getName());
                     jsonObject.put("displayName", scalar.getDisplayName());
@@ -299,7 +298,7 @@ public class GatewayReportUtils extends AbstractReportUtils{
 
                 jsonArray.put(jsonObject);
             }
-        }catch (JSONException e){
+        } catch (JSONException e) {
             logger.error("Error serializing parameter structure", e);
         }
 
@@ -323,29 +322,27 @@ public class GatewayReportUtils extends AbstractReportUtils{
     }
 
     /**
-     *
      * Read in parameters from report definition and type cast method parameters to match.
      * If you try to send BIRT a string argument (from a web call) to a report expecting an integer,
      * it throws an exception.
      *
      * @param reportData byte[] binary copy of report runnable to submit to the report engine
      * @param parameters key value pair of submitted report parameters
-     *
-     * */
+     */
     //TODO I think I broke this for the REST API unless a report is using a string argument
-    private Map<String, Object> typeCastReportParameters(byte[] reportData, Map<String, Object> parameters){
+    private Map<String, Object> typeCastReportParameters(byte[] reportData, Map<String, Object> parameters) {
 
         ArrayList<IParameterDefnBase> reportParameters = getReportParameters(reportData);
 
-        for(IParameterDefnBase _param : reportParameters) {
-            IScalarParameterDefn param = (IScalarParameterDefn)_param;
+        for (IParameterDefnBase _param : reportParameters) {
+            IScalarParameterDefn param = (IScalarParameterDefn) _param;
             Object _value = parameters.get(param.getName());
             Object value = null;
 
-            if(_value != null) {
+            if (_value != null) {
                 logger.debug(String.format("Casting parameter %s to type %s", param.getName(), param.getDataType()));
-                try{
-                    switch(param.getDataType()){
+                try {
+                    switch (param.getDataType()) {
                         case PARAMETER_DATATYPE_BOOLEAN:
                             //value = Boolean.parseBoolean(_value);
                             value = _value;
@@ -353,7 +350,7 @@ public class GatewayReportUtils extends AbstractReportUtils{
                         case PARAMETER_DATATYPE_DATE:
                             //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             //value = formatter.parse(_value);
-                            Date uDate = (Date)_value;
+                            Date uDate = (Date) _value;
                             value = new java.sql.Date(uDate.getTime());
                             break;
                         case PARAMETER_DATATYPE_INTEGER:
@@ -369,7 +366,7 @@ public class GatewayReportUtils extends AbstractReportUtils{
                     }
 
                     parameters.replace(param.getName(), value);
-                }catch(ClassCastException e){
+                } catch (ClassCastException e) {
                     logger.error("Error parsing date for report parameter", e);
                 }
             }
@@ -403,44 +400,42 @@ public class GatewayReportUtils extends AbstractReportUtils{
 
     /**
      * Python dictiony/args version of runAndRenderToStream
-     * */
+     */
     @SuppressWarnings("unchecked")
-    public void runAndRenderToStream(Map args, OutputStream outputStream){
+    public void runAndRenderToStream(Map args, OutputStream outputStream) {
 
-        Long reportId = Long.parseLong((String)args.get("reportId"));
-        String reportName = (String)args.get("reportName");
-        String outputFormat = (String)args.get("outputFormat");
-        Map<String, Object> parameters = (Map)args.get("parameters");
-        Map<String, Object> options = (Map)args.get("options");
+        Long reportId = Long.parseLong((String) args.get("reportId"));
+        String reportName = (String) args.get("reportName");
+        String outputFormat = (String) args.get("outputFormat");
+        Map<String, Object> parameters = (Map) args.get("parameters");
+        Map<String, Object> options = (Map) args.get("options");
 
         runAndRenderToStream(reportId, reportName, outputFormat, parameters, options, outputStream);
     }
 
 
     /**
-     *
      * Abstracted method that will allow us to return an output stream to a servlet, or through an RPC call
      * that will return data to a client/designer.
      *
-     * @param reportId report ID used to look up the report document from SQL
+     * @param reportId     report ID used to look up the report document from SQL
      * @param reportName
      * @param outputFormat string representation of the output format html/pdf/xls/doc
-     * @param parameters Report parameters
-     * @param options Rendering options
+     * @param parameters   Report parameters
+     * @param options      Rendering options
      * @param outputStream Output stream that will take the rendered report stream
-     *
-     * */
+     */
     @SuppressWarnings("unchecked")
     public void runAndRenderToStream(Long reportId, String reportName, String outputFormat,
                                      Map<String, Object> parameters, Map<String, Object> options,
-                                     OutputStream outputStream){
+                                     OutputStream outputStream) {
 
         byte[] reportData = (reportId == null) ? getReport(reportName) : getReport(reportId);
 
-        if(reportData == null)
+        if (reportData == null)
             throw new InvalidParameterException("Invalid report id or name");
 
-        try{
+        try {
             IReportRunnable report = ReportEngineService.getInstance().getEngine()
                     .openReportDesign(new ByteArrayInputStream(reportData));
 
@@ -449,8 +444,8 @@ public class GatewayReportUtils extends AbstractReportUtils{
             task.getAppContext().put(EngineConstants.APPCONTEXT_BIRT_VIEWER_HTTPSERVET_REQUEST,
                     this.getClass().getClassLoader());
 
-            parameters = typeCastReportParameters(reportData, parameters);
-            task.setParameterValues(parameters);
+            var typedParameters = typeCastReportParameters(reportData, parameters);
+            task.setParameterValues(typedParameters);
 
             RenderOption renderOptions = handleRenderOptions(outputFormat, options);
             renderOptions.setOutputStream(outputStream);
@@ -462,38 +457,36 @@ public class GatewayReportUtils extends AbstractReportUtils{
             task.run();
             task.close();
 
-        }catch(EngineException e){
+        } catch (EngineException e) {
             logger.error("Exception while creating run and render task", e);
         }
 
     }
 
     /**
-     *
      * Appends PDF specific rendering options to the report
      *
      * @param outputFormat pdf/excel/word etc. output format
-     * @param options key/value pairs of rendering options to submit
-     *
-     * */
-    private RenderOption handleRenderOptions(String outputFormat, Map<String, Object> options){
+     * @param options      key/value pairs of rendering options to submit
+     */
+    private RenderOption handleRenderOptions(String outputFormat, Map<String, Object> options) {
         RenderOption renderOptions = new RenderOption();
 
-        if(outputFormat == null)
+        if (outputFormat == null)
             outputFormat = "html";
 
-        if(options == null)
+        if (options == null)
             options = new HashMap<>();
 
-        if(outputFormat.equalsIgnoreCase("pdf")){
+        if (outputFormat.equalsIgnoreCase("pdf")) {
             renderOptions = handlePDFRenderOptions(renderOptions, options);
-        }else if(outputFormat.equalsIgnoreCase("xlsx")){
+        } else if (outputFormat.equalsIgnoreCase("xlsx")) {
             renderOptions = handleExcelRenderOptions(renderOptions, options);
-        }else if(outputFormat.equalsIgnoreCase("xls")){
+        } else if (outputFormat.equalsIgnoreCase("xls")) {
             handleSpudsoftRenderOptions(renderOptions, options);
-        }else if(outputFormat.equalsIgnoreCase("doc")){
+        } else if (outputFormat.equalsIgnoreCase("doc")) {
             handleWordRenderOptions(renderOptions, options);
-        }else{
+        } else {
             renderOptions.setOutputFormat("html");
             renderOptions = handleHTMLRenderOptions(renderOptions, options);
         }
@@ -502,14 +495,12 @@ public class GatewayReportUtils extends AbstractReportUtils{
     }
 
     /**
-     *
      * Appends HTML specific rendering options to the report
      *
      * @param renderOption base renderOption class to append to
-     * @param args arguments provided from scripting API
-     *
-     * */
-    private HTMLRenderOption handleHTMLRenderOptions(RenderOption renderOption, Map args){
+     * @param args         arguments provided from scripting API
+     */
+    private HTMLRenderOption handleHTMLRenderOptions(RenderOption renderOption, Map args) {
         HTMLRenderOption htmlOptions = new HTMLRenderOption(renderOption);
         ArgumentMap options = new ArgumentMap(args);
         htmlOptions.setOutputFormat("html");
@@ -518,11 +509,11 @@ public class GatewayReportUtils extends AbstractReportUtils{
         String imageHandlerType = options.getStringArg("image-handler", "server");
 
         /*
-        * Image Handler Types:
-        *   complete - Built for a "complete" web page.  Links in HTML are shown as file:/
-        *   server - Build for a web application.  Links in HTML shown as href="/images/..."
-        * */
-        if(imageHandlerType.equalsIgnoreCase("complete"))
+         * Image Handler Types:
+         *   complete - Built for a "complete" web page.  Links in HTML are shown as file:/
+         *   server - Build for a web application.  Links in HTML shown as href="/images/..."
+         * */
+        if (imageHandlerType.equalsIgnoreCase("complete"))
             imageHandler = new HTMLCompleteImageHandler();
         else if (imageHandlerType.equalsIgnoreCase("standalone"))
             imageHandler = new HTMLImageHandler();
@@ -542,14 +533,12 @@ public class GatewayReportUtils extends AbstractReportUtils{
     }
 
     /**
-     *
      * Appends PDF specific rendering options to the report
      *
      * @param renderOption base renderOption class to append to
-     * @param args arguments provided from scripting API
-     *
-     * */
-    private PDFRenderOption handlePDFRenderOptions(RenderOption renderOption, Map args){
+     * @param args         arguments provided from scripting API
+     */
+    private PDFRenderOption handlePDFRenderOptions(RenderOption renderOption, Map args) {
         PDFRenderOption pdfOptions = new PDFRenderOption(renderOption);
         ArgumentMap options = new ArgumentMap(args);
         pdfOptions.setOutputFormat("pdf");
@@ -568,14 +557,12 @@ public class GatewayReportUtils extends AbstractReportUtils{
     }
 
     /**
-     *
      * Appends Excel specific rendering options to the report
      *
      * @param renderOption base renderOption class to append to
-     * @param args arguments provided from scripting API
-     *
-     * */
-    private EXCELRenderOption handleExcelRenderOptions(RenderOption renderOption, Map args){
+     * @param args         arguments provided from scripting API
+     */
+    private EXCELRenderOption handleExcelRenderOptions(RenderOption renderOption, Map args) {
         EXCELRenderOption excelRenderOption = new EXCELRenderOption(renderOption);
         ArgumentMap options = new ArgumentMap(args);
         excelRenderOption.setOutputFormat("xlsx");
@@ -594,14 +581,12 @@ public class GatewayReportUtils extends AbstractReportUtils{
     }
 
     /**
-     *
      * Appends Spudsoft Excel Emitter Rendering Options to the report
      *
      * @param renderOption base renderOption class to append to
-     * @param args arguments provided from scripting API
-     *
-     * */
-    private RenderOption handleSpudsoftRenderOptions(RenderOption renderOption, Map args){
+     * @param args         arguments provided from scripting API
+     */
+    private RenderOption handleSpudsoftRenderOptions(RenderOption renderOption, Map args) {
         ArgumentMap options = new ArgumentMap(args);
 
         // TODO images missing from spudsoft emitter
@@ -613,14 +598,12 @@ public class GatewayReportUtils extends AbstractReportUtils{
     }
 
     /**
-     *
      * Appends Word specific rendering options to the report
      *
      * @param renderOption base renderOption class to append to
-     * @param args arguments provided from scripting API
-     *
-     * */
-    private RenderOption handleWordRenderOptions(RenderOption renderOption, Map args){
+     * @param args         arguments provided from scripting API
+     */
+    private RenderOption handleWordRenderOptions(RenderOption renderOption, Map args) {
         renderOption.setOutputFormat("doc");
         renderOption.setSupportedImageFormats("PNG;GIF;JPG;BMP");
         return renderOption;
