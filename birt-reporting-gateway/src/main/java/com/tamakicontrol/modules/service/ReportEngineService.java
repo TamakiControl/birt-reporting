@@ -3,7 +3,6 @@ package com.tamakicontrol.modules.service;
 import com.inductiveautomation.ignition.common.util.LoggerEx;
 import com.inductiveautomation.ignition.gateway.datasource.records.JDBCDriverRecord;
 import com.inductiveautomation.ignition.gateway.model.GatewayContext;
-import com.tamakicontrol.modules.util.IgnitionLoggerBridge;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.core.framework.Platform;
 import org.eclipse.birt.core.framework.PlatformServletContext;
@@ -13,6 +12,7 @@ import org.eclipse.birt.report.engine.api.EngineConstants;
 import org.eclipse.birt.report.engine.api.IReportEngine;
 import org.eclipse.birt.report.engine.api.IReportEngineFactory;
 import org.eclipse.core.internal.registry.RegistryProviderFactory;
+import org.eclipse.datatools.connectivity.oda.OdaException;
 import simpleorm.dataset.SQuery;
 
 import java.io.File;
@@ -23,12 +23,18 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.jar.JarFile;
+import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import static java.util.logging.Level.*;
 
 public class ReportEngineService {
 
     private static final LoggerEx logger = LoggerEx.newBuilder().build(ReportEngineService.class);
+    private static final LoggerEx birtLogger = LoggerEx.newBuilder().build(IReportEngine.class);
     private final GatewayContext gatewayContext;
 
     private static ReportEngineService instance;
@@ -54,13 +60,9 @@ public class ReportEngineService {
 
             if (factory != null) {
                 engine = factory.createReportEngine(engineConfig);
-
-                var testLogger = IgnitionLoggerBridge.from(logger);
-                testLogger.setParent(engine.getLogger());
-                testLogger.setUseParentHandlers(false);
-                engine.setLogger(testLogger);
-
                 loadJDBCDrivers();
+                // purposely set after JDBC drivers because BIRT has 50 spam errors that don't affect anything...
+                engine.setLogger(buildLogger());
             } else {
                 logger.error("Cannot Create BIRT Engine - Engine Factory Object is Null");
             }
@@ -86,12 +88,12 @@ public class ReportEngineService {
         for (File jarFile : jdbcDrivers) {
             try {
                 driverURLs.add(new URL("jar:file:" + jarFile.getAbsolutePath() + "!/"));
-            }catch (MalformedURLException e) {
+            } catch (MalformedURLException e) {
                 logger.warn("Error while loading JDBC Driver JAR: " + jarFile.getAbsolutePath(), e);
             }
         }
 
-        // save the thread class loader so we can restore it later
+        // save the thread class loader, so we can restore it later
         var cl = Thread.currentThread().getContextClassLoader();
 
         // get the birt driver manager and initialize it with JDBC classes from the user-lib/jdbc folder
@@ -100,7 +102,7 @@ public class ReportEngineService {
 
             // load all classes of each jar file
             for (File jarFile : jdbcDrivers) {
-                try(JarFile jar = new JarFile(jarFile)) {
+                try (JarFile jar = new JarFile(jarFile)) {
                     var classes = jar.stream()
                             .filter(entry -> entry.getName().endsWith(".class"))
                             .map(entry -> entry.getName().replace("/", ".").replace(".class", ""))
@@ -131,7 +133,7 @@ public class ReportEngineService {
                     logger.debugf("Loading JDBC Driver: %s", driver.getClassname());
                     urlClassLoader.loadClass(driver.getClassname()); // load the class so that BIRT can find it
                     driverManager.loadAndRegisterDriver(driver.getClassname(), null); // register the driver with BIRT
-                } catch (Exception e) {
+                } catch (ClassNotFoundException | OdaException e) {
                     logger.warnf("Failed to load driver: %s", driver.getClassname(), e);
                 }
             });
@@ -140,6 +142,43 @@ public class ReportEngineService {
             // reset thread class loader
             Thread.currentThread().setContextClassLoader(cl);
         }
+    }
+
+    /**
+     * @return Java logger that works with BIRT
+     */
+    public Logger buildLogger() {
+        var log = Logger.getLogger(birtLogger.getName());
+        log.setUseParentHandlers(false);
+        log.setLevel(WARNING);
+        log.addHandler(new Handler() {
+            @Override
+            public void publish(LogRecord record) {
+                Level level = record.getLevel();
+                if (SEVERE.equals(level)) {
+                    birtLogger.error(record.getMessage(), record.getThrown());
+                } else if (WARNING.equals(level)) {
+                    birtLogger.warn(record.getMessage(), record.getThrown());
+                } else if (INFO.equals(level)) {
+                    birtLogger.info(record.getMessage(), record.getThrown());
+                } else if (CONFIG.equals(level)) {
+                    birtLogger.debug(record.getMessage(), record.getThrown());
+                } else {
+                    birtLogger.trace(record.getMessage(), record.getThrown());
+                }
+            }
+
+            @Override
+            public void flush() {
+                // nop
+            }
+
+            @Override
+            public void close() throws SecurityException {
+                // nop
+            }
+        });
+        return log;
     }
 
     public static ReportEngineService getInstance() {
