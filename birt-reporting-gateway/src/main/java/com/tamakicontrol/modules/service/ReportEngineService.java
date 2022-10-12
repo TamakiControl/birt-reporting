@@ -15,18 +15,15 @@ import org.eclipse.birt.report.engine.api.IReportEngineFactory;
 import org.eclipse.core.internal.registry.RegistryProviderFactory;
 import simpleorm.dataset.SQuery;
 
-import javax.transaction.Synchronization;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ReportEngineService {
@@ -76,7 +73,7 @@ public class ReportEngineService {
     /**
      * Loads all JDBC driver JARs from the Ignition user-lib/jdbc directory so that BIRT is able to find them
      */
-    protected void loadJDBCDrivers() throws Exception {
+    protected void loadJDBCDrivers() throws IOException {
 
         // list files in the ignition user-lib/jdbc directory
         var userLibFolder = gatewayContext.getSystemManager().getUserLibDir();
@@ -87,8 +84,15 @@ public class ReportEngineService {
         // build list of URLs for every file in jdbc folder
         var driverURLs = new ArrayList<>(jdbcDrivers.length);
         for (File jarFile : jdbcDrivers) {
-            driverURLs.add(new URL("jar:file:" + jarFile.getAbsolutePath() + "!/"));
+            try {
+                driverURLs.add(new URL("jar:file:" + jarFile.getAbsolutePath() + "!/"));
+            }catch (MalformedURLException e) {
+                logger.warn("Error while loading JDBC Driver JAR: " + jarFile.getAbsolutePath(), e);
+            }
         }
+
+        // save the thread class loader so we can restore it later
+        var cl = Thread.currentThread().getContextClassLoader();
 
         // get the birt driver manager and initialize it with JDBC classes from the user-lib/jdbc folder
         var driverManager = JDBCDriverManager.getInstance();
@@ -113,8 +117,6 @@ public class ReportEngineService {
                             logger.debugf("Missing dependency class: %s in file: %s", className, jarFile.getPath(), e1);
                         }
                     }
-                } catch (Exception e) {
-                    logger.info("Wtf is going on", e);
                 }
             }
 
@@ -134,6 +136,9 @@ public class ReportEngineService {
                 }
             });
 
+        } finally {
+            // reset thread class loader
+            Thread.currentThread().setContextClassLoader(cl);
         }
     }
 

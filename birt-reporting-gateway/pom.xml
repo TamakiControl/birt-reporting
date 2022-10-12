@@ -563,19 +563,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-dbcp2</artifactId>
-            <version>2.9.0</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>jta</artifactId>
-            <version>1.1</version>
-        </dependency>
-
         <!-- <editor-fold name="Test Dependencies"> -->
 
         <dependency>
